@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StudentService {
@@ -48,5 +49,10 @@ public class StudentService {
         student.setYearOfStudy(dto.getYearOfStudy());
 
         studentDao.save(student);
+    }
+
+    public FetchStudentDto getStudentById(Integer studentId) {
+        Student student = studentDao.findByStudentId(studentId);
+        return convertToDto(student);
     }
 }
