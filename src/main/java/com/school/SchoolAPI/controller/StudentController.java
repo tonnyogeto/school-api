@@ -2,6 +2,7 @@ package com.school.SchoolAPI.controller;
 
 import com.school.SchoolAPI.dto.CreateStudentDto;
 import com.school.SchoolAPI.dto.FetchStudentDto;
+import com.school.SchoolAPI.exception.UserNotFoundException;
 import com.school.SchoolAPI.service.StudentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,11 +33,11 @@ public class StudentController {
         return ResponseEntity.status(HttpStatus.CREATED).body("success");
     }
 
-    @GetMapping("/{studentId}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getStudentById(
-            @PathVariable("studentId") Integer studentId
-    ){
-        FetchStudentDto student =studentService.getStudentById(studentId);
+            @PathVariable("id") Integer id
+    ) throws UserNotFoundException {
+        FetchStudentDto student =studentService.getStudentById(id);
         return ResponseEntity.status(HttpStatus.OK).body(student);
 
     }

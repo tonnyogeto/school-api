@@ -3,6 +3,7 @@ package com.school.SchoolAPI.service;
 import com.school.SchoolAPI.dao.StudentDao;
 import com.school.SchoolAPI.dto.CreateStudentDto;
 import com.school.SchoolAPI.dto.FetchStudentDto;
+import com.school.SchoolAPI.exception.UserNotFoundException;
 import com.school.SchoolAPI.model.Student;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,8 +52,13 @@ public class StudentService {
         studentDao.save(student);
     }
 
-    public FetchStudentDto getStudentById(Integer studentId) {
-        Student student = studentDao.findByStudentId(studentId);
-        return convertToDto(student);
+    public FetchStudentDto getStudentById(Integer id) throws UserNotFoundException {
+        Optional <Student> studentOptional = studentDao.findById(id);
+        if (studentOptional.isPresent()) {
+            return convertToDto(studentOptional.get());
+        }
+        else{
+            throw new UserNotFoundException("user not found with id :" + id);
+        }
     }
 }
